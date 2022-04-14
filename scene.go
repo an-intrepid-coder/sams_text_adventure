@@ -25,7 +25,21 @@ func (s *Scene) AddActor(a *Actor) {
     s.Actors.PushFront(a)
 }
 
-
+/* Returns a slice containing pointers to all actors which can be engaged
+   or fought.  */
+func (s *Scene) HostileActors() []*Actor {
+    a := []*Actor{}
+    for e := s.Actors.Front(); e != nil; e = e.Next() {
+        b := e.Value.(*Actor)
+        if Attitudes.Label(b.Attitude) == "hostile" {
+            a = append(a, b)
+        }
+    }
+    if len(a) > 0 { 
+        return a
+    }
+    return nil
+}
 
 // Returns true/false on success/failure.
 func (s *Scene) RemoveActor(a *Actor) bool {
